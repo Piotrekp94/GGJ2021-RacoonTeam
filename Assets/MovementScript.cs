@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
@@ -22,27 +23,17 @@ public class MovementScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            if (_movement.x >= 1)
-            {
-                _movement.x = 1;
-            }
-            else
-            {
-                _movement.x += 0.10f;
-            }
+            _movement = stepToDesiredSpeed(1, 0.01f, _movement);
+        }
+        else if(Input.GetKey(KeyCode.RightArrow))
+        {
+            _movement = stepToDesiredSpeed(1, 0.01f, _movement);
         }
         else
         {
-            if (_movement.x <= 0)
-            {
-                _movement.x = 0;
-            }
-            else
-            {
-                _movement.x -= 0.10f;
-            }
+            _movement = stepToDesiredSpeed(0, 0.02f, _movement);
         }
 
         _movement.y = Input.GetAxisRaw("Vertical");
@@ -51,9 +42,42 @@ public class MovementScript : MonoBehaviour
         animator.SetFloat(Vertical, _movement.y);
         animator.SetFloat(Speed, _movement.sqrMagnitude);
     }
-    
+
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
+    }
+
+    Vector3 stepToDesiredSpeed(float desiredSpeed, float step, Vector3 currentSpeed)
+    {
+        if (currentSpeed.x > desiredSpeed)
+        {
+            step *= -1;
+        }
+
+        if (step < 0)
+        {
+            if (currentSpeed.x <= desiredSpeed)
+            {
+                currentSpeed.x = desiredSpeed;
+            }
+            else
+            {
+                currentSpeed.x += step;
+            }
+        }
+        else
+        {
+            if (currentSpeed.x >= desiredSpeed)
+            {
+                currentSpeed.x = desiredSpeed;
+            }
+            else
+            {
+                currentSpeed.x += step;
+            }
+        }
+
+        return currentSpeed;
     }
 }

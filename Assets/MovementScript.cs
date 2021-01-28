@@ -1,44 +1,59 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-    private float playerSpeed = 10.0f;
-    private float jumpHeight = 5.0f;
-    private float gravityValue = -9.81f;
+    [SerializeField] private float speed;
+
+    public Rigidbody rb;
+    public Animator animator;
+
+    private Vector3 _movement;
+
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Vertical = Animator.StringToHash("Vertical");
+    private static readonly int Horizontal = Animator.StringToHash("Horizontal");
 
     private void Start()
     {
-        controller = gameObject.AddComponent<CharacterController>();
     }
 
     void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            playerVelocity.y = 0f;
+            if (_movement.x >= 1)
+            {
+                _movement.x = 1;
+            }
+            else
+            {
+                _movement.x += 0.10f;
+            }
+        }
+        else
+        {
+            if (_movement.x <= 0)
+            {
+                _movement.x = 0;
+            }
+            else
+            {
+                _movement.x -= 0.10f;
+            }
         }
 
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        _movement.y = Input.GetAxisRaw("Vertical");
 
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
-
-        // Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        }
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        animator.SetFloat(Horizontal, _movement.x);
+        animator.SetFloat(Vertical, _movement.y);
+        animator.SetFloat(Speed, _movement.sqrMagnitude);
+    }
+    
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
 }

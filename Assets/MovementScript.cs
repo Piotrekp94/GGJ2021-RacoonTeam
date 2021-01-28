@@ -4,7 +4,7 @@ using UnityEngine;
 public class MovementScript : MonoBehaviour
 {
     private static readonly int Speed = Animator.StringToHash("Speed");
-    private static readonly int Vertical = Animator.StringToHash("Vertical");
+    private static readonly int isStoppingHash = Animator.StringToHash("isStopping");
     private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     [SerializeField] private float speed;
 
@@ -13,7 +13,9 @@ public class MovementScript : MonoBehaviour
 
 
     public Vector3 _movement;
-    private bool isMoving;
+    public bool isStopping = false;
+    public bool isTurning = false;
+    private bool isMoving = false;
 
     private void Start()
     {
@@ -23,23 +25,25 @@ public class MovementScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
+            isStopping = false;
             _movement = stepToDesiredSpeed(1f, 0.01f, _movement);
             isMoving = true;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
+            isStopping = false;
             _movement = stepToDesiredSpeed(-1f, 0.01f, _movement);
             isMoving = true;
         }
         else if (isMoving)
         {
+            isStopping = true;
             _movement = stepToDesiredSpeed(0, 0.02f, _movement);
         }
 
         _movement.y = Input.GetAxisRaw("Vertical");
 
-        animator.SetFloat(Horizontal, _movement.x);
-        animator.SetFloat(Vertical, _movement.y);
+        animator.SetBool(isStoppingHash, isStopping);
         animator.SetFloat(Speed, _movement.sqrMagnitude);
     }
 

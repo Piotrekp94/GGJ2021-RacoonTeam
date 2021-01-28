@@ -10,7 +10,7 @@ public class MovementScript : MonoBehaviour
 
     public Rigidbody rb;
     public Animator animator;
-    
+
 
     public Vector3 _movement;
     private bool isMoving;
@@ -31,7 +31,7 @@ public class MovementScript : MonoBehaviour
             _movement = stepToDesiredSpeed(-1f, 0.01f, _movement);
             isMoving = true;
         }
-        else if(isMoving)
+        else if (isMoving)
         {
             _movement = stepToDesiredSpeed(0, 0.02f, _movement);
         }
@@ -53,10 +53,7 @@ public class MovementScript : MonoBehaviour
         if (Math.Abs(currentSpeed.x - desiredSpeed) < step)
         {
             currentSpeed.x = desiredSpeed;
-            if (desiredSpeed == 0)
-            {
-                isMoving = false;
-            }
+            if (desiredSpeed == 0) isMoving = false;
             return currentSpeed;
         }
 

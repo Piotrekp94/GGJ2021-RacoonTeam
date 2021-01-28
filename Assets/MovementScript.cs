@@ -1,37 +1,37 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Vertical = Animator.StringToHash("Vertical");
+    private static readonly int Horizontal = Animator.StringToHash("Horizontal");
     [SerializeField] private float speed;
 
     public Rigidbody rb;
     public Animator animator;
+    
 
-    private Vector3 _movement;
-
-    private static readonly int Speed = Animator.StringToHash("Speed");
-    private static readonly int Vertical = Animator.StringToHash("Vertical");
-    private static readonly int Horizontal = Animator.StringToHash("Horizontal");
+    public Vector3 _movement;
+    private bool isMoving;
 
     private void Start()
     {
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            _movement = stepToDesiredSpeed(1, 0.01f, _movement);
+            _movement = stepToDesiredSpeed(1f, 0.01f, _movement);
+            isMoving = true;
         }
-        else if(Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
-            _movement = stepToDesiredSpeed(1, 0.01f, _movement);
+            _movement = stepToDesiredSpeed(-1f, 0.01f, _movement);
+            isMoving = true;
         }
-        else
+        else if(isMoving)
         {
             _movement = stepToDesiredSpeed(0, 0.02f, _movement);
         }
@@ -48,34 +48,33 @@ public class MovementScript : MonoBehaviour
         rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
 
-    Vector3 stepToDesiredSpeed(float desiredSpeed, float step, Vector3 currentSpeed)
+    private Vector3 stepToDesiredSpeed(float desiredSpeed, float step, Vector3 currentSpeed)
     {
-        if (currentSpeed.x > desiredSpeed)
+        if (Math.Abs(currentSpeed.x - desiredSpeed) < step)
         {
-            step *= -1;
+            currentSpeed.x = desiredSpeed;
+            if (desiredSpeed == 0)
+            {
+                isMoving = false;
+            }
+            return currentSpeed;
         }
+
+        if (currentSpeed.x > desiredSpeed) step *= -1;
 
         if (step < 0)
         {
             if (currentSpeed.x <= desiredSpeed)
-            {
                 currentSpeed.x = desiredSpeed;
-            }
             else
-            {
                 currentSpeed.x += step;
-            }
         }
         else
         {
             if (currentSpeed.x >= desiredSpeed)
-            {
                 currentSpeed.x = desiredSpeed;
-            }
             else
-            {
                 currentSpeed.x += step;
-            }
         }
 
         return currentSpeed;

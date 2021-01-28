@@ -1,44 +1,82 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-    private float playerSpeed = 10.0f;
-    private float jumpHeight = 5.0f;
-    private float gravityValue = -9.81f;
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Vertical = Animator.StringToHash("Vertical");
+    private static readonly int Horizontal = Animator.StringToHash("Horizontal");
+    [SerializeField] private float speed;
+
+    public Rigidbody rb;
+    public Animator animator;
+    
+
+    public Vector3 _movement;
+    private bool isMoving;
 
     private void Start()
     {
-        controller = gameObject.AddComponent<CharacterController>();
     }
 
-    void Update()
+    private void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerVelocity.y = 0f;
+            _movement = stepToDesiredSpeed(1f, 0.01f, _movement);
+            isMoving = true;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            _movement = stepToDesiredSpeed(-1f, 0.01f, _movement);
+            isMoving = true;
+        }
+        else if(isMoving)
+        {
+            _movement = stepToDesiredSpeed(0, 0.02f, _movement);
         }
 
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        _movement.y = Input.GetAxisRaw("Vertical");
 
-        if (move != Vector3.zero)
+        animator.SetFloat(Horizontal, _movement.x);
+        animator.SetFloat(Vertical, _movement.y);
+        animator.SetFloat(Speed, _movement.sqrMagnitude);
+    }
+
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
+    }
+
+    private Vector3 stepToDesiredSpeed(float desiredSpeed, float step, Vector3 currentSpeed)
+    {
+        if (Math.Abs(currentSpeed.x - desiredSpeed) < step)
         {
-            gameObject.transform.forward = move;
+            currentSpeed.x = desiredSpeed;
+            if (desiredSpeed == 0)
+            {
+                isMoving = false;
+            }
+            return currentSpeed;
         }
 
-        // Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
+        if (currentSpeed.x > desiredSpeed) step *= -1;
+
+        if (step < 0)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            if (currentSpeed.x <= desiredSpeed)
+                currentSpeed.x = desiredSpeed;
+            else
+                currentSpeed.x += step;
+        }
+        else
+        {
+            if (currentSpeed.x >= desiredSpeed)
+                currentSpeed.x = desiredSpeed;
+            else
+                currentSpeed.x += step;
         }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        return currentSpeed;
     }
 }

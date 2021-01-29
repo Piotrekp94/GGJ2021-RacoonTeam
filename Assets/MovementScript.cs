@@ -1,222 +1,64 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    private static readonly int Speed = Animator.StringToHash("Speed");
-    private static readonly int isStoppingHash = Animator.StringToHash("isStopping");
-    private static readonly int currentStateHash = Animator.StringToHash("currentState");
+    private static readonly int currentSpeed = Animator.StringToHash("currentSpeed");
 
-    [SerializeField] private float speed;
+    [SerializeField] private int speed;
 
     public Rigidbody rb;
     public Animator animator;
-
-    public bool isRunningLeft;
-
+    public bool isOnGround;
+    
     public Vector3 _movement;
-    public bool isStopping;
-    public bool isTurning;
-    private bool isMoving;
+
 
     private float currentStep = 0.1f;
     private float desiredSpeed = 0f;
-
-    public float maxSpeed = 1.0f;
-    public RunningStatesEnum currentState = RunningStatesEnum.Idle;
-    public RunningDirections currentDirection = RunningDirections.Right;
-    public RunningLockableStatesEnum currentLock = RunningLockableStatesEnum.Unlocked;
+    private bool isMoving;
 
 
     private void Update()
     {
-        desiredSpeed = generateDesiredSpeed();
-        currentStep = generateDesiredStep();
-        _movement = stepToDesiredSpeed(desiredSpeed, currentStep, _movement);
-        if (currentLock == RunningLockableStatesEnum.Locked)
+        var speedx = speed;
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            return;
+            speedx = -1 * speedx;
+            transform.eulerAngles  = new Vector3(transform.rotation.x, 90f, transform.rotation.z);
+
         }
-        if (currentState == RunningStatesEnum.Idle)
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                currentState = RunningStatesEnum.Running;
-                currentLock = RunningLockableStatesEnum.Locked;
-                currentDirection = RunningDirections.Left;
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                currentState = RunningStatesEnum.Running;
-                currentLock = RunningLockableStatesEnum.Locked;
-                currentDirection = RunningDirections.Right;
-            }
-        } else
-        if (currentState == RunningStatesEnum.Running)
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                // if (currentDirection == RunningDirections.Right)
-                // {
-                //     currentState = RunningStatesEnum.Turning;
-                //     currentLock = RunningLockableStatesEnum.Locked;
-                //     currentDirection = RunningDirections.Left;
-                // }
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                // if (currentDirection == RunningDirections.Left)
-                // {
-                //     currentState = RunningStatesEnum.Turning;
-                //     currentLock = RunningLockableStatesEnum.Locked;
-                //     currentDirection = RunningDirections.Right;
-                // }
-            }
-            else
-            {
-                currentState = RunningStatesEnum.Stopping;
-            }
+            transform.eulerAngles  = new Vector3(transform.rotation.x, -90f, transform.rotation.z);
         }
-        if (currentState == RunningStatesEnum.Stopping)
+        else
         {
-            if (Input.GetKey(KeyCode.LeftArrow) && currentDirection == RunningDirections.Right)
-            {
-                currentState = RunningStatesEnum.Turning;
-                currentLock = RunningLockableStatesEnum.Locked;
-                currentDirection = RunningDirections.Left;
-            }
-            else if (Input.GetKey(KeyCode.RightArrow) && currentDirection == RunningDirections.Left)
-            {
-                currentState = RunningStatesEnum.Turning;
-                currentLock = RunningLockableStatesEnum.Locked;
-                currentDirection = RunningDirections.Right;
-            }
+            speedx = 0;
+        }
+        
+        if (Input.GetKey(KeyCode.Space))
+        {
+             
         }
 
-        // if (Input.GetKey(KeyCode.LeftArrow))
-        // {
-        //     if (_movement.x > 0) isRunningLeft = true;
-        //     if (_movement.x < 0)
-        //         isTurning = true;
-        //     else
-        //         isTurning = false;
-        //     isStopping = false;
-        //     _movement = stepToDesiredSpeed(1f, 0.01f, _movement);
-        // }
-        // else if (Input.GetKey(KeyCode.RightArrow))
-        // {
-        //     if (_movement.x < 0) isRunningLeft = false;
-        //     if (_movement.x > 0)
-        //         isTurning = true;
-        //     else
-        //         isTurning = false;
-        //
-        //     
-        //     isStopping = false;
-        //     _movement = stepToDesiredSpeed(-1f, 0.01f, _movement);
-        // }
-        // else if (isMoving)
-        // {
-        //     isTurning = false;
-        //     isStopping = true;
-        //     _movement = stepToDesiredSpeed(0, 0.01f, _movement);
-        // }
-        //
-        // if (isRunningLeft)
-        // {
-        //     if (transform.localScale.z > 0)
-        //     {
-        //         var localScale = transform.localScale;
-        //         localScale =
-        //             new Vector3(localScale.x, localScale.y, -localScale.z);
-        //         transform.localScale = localScale;
-        //     }
-        // } else
-        // if (!isRunningLeft)
-        // {
-        //     if (transform.localScale.z < 0)
-        //     {
-        //         var localScale = transform.localScale;
-        //         localScale =
-        //             new Vector3(localScale.x, localScale.y, -localScale.z);
-        //         transform.localScale = localScale;
-        //     }
-        // }
-        //
-        // _movement.y = Input.GetAxisRaw("Vertical");
-        //
-         animator.SetInteger(currentStateHash, (int)currentState);
-        // animator.SetBool(isStoppingHash, isStopping);
-        // animator.SetFloat(Speed, _movement.sqrMagnitude);
+
+        _movement.x = speedx;
+        animator.SetInteger(currentSpeed, speedx);
     }
+
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
 
-    private float generateDesiredStep()
+    private void OnCollisionEnter(Collision other)
     {
-        float s = 0f;
-        if (RunningStatesEnum.Running == currentState)
-        {
-            s = 0.1f;
-
-        }
-        if (RunningStatesEnum.Stopping == currentState || RunningStatesEnum.Idle == currentState || RunningStatesEnum.Turning == currentState)
-        {
-            s = 0.2f;
-        }
-
-        return s;
+        isOnGround = true;
     }
-    private float generateDesiredSpeed()
+    private void OnCollisionExit(Collision other)
     {
-        float s = 0f;
-        if (RunningStatesEnum.Running == currentState)
-        {
-            s = maxSpeed;
-            if (RunningDirections.Left == currentDirection)
-            {
-                s = maxSpeed * -1.0f;
-            }
-        }
-        if (RunningStatesEnum.Stopping == currentState || RunningStatesEnum.Idle == currentState || RunningStatesEnum.Turning == currentState)
-        {
-            s = 0.0f;
-        }
-
-        return s;
-    }
-    private Vector3 stepToDesiredSpeed(float desiredSpeed, float step, Vector3 currentSpeed)
-    {
-        if (Math.Abs(currentSpeed.x - desiredSpeed) < step)
-        {
-            currentSpeed.x = desiredSpeed;
-            if (desiredSpeed == 0) isMoving = false;
-            currentLock = RunningLockableStatesEnum.Unlocked;
-            if (currentState == RunningStatesEnum.Stopping)
-                currentState = RunningStatesEnum.Idle;
-            return currentSpeed;
-        }
-
-        isMoving = true;
-        if (currentSpeed.x > desiredSpeed) step *= -1;
-
-        if (step < 0)
-        {
-            if (currentSpeed.x <= desiredSpeed)
-                currentSpeed.x = desiredSpeed;
-            else
-                currentSpeed.x += step;
-        }
-        else
-        {
-            if (currentSpeed.x >= desiredSpeed)
-                currentSpeed.x = desiredSpeed;
-            else
-                currentSpeed.x += step;
-        }
-
-        return currentSpeed;
+        isOnGround = false;
     }
 }

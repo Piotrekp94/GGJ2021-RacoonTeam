@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: d9f8b71946e67884d981fe8cdda97b4f
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      74: -4224680477437220927
+    second: Idle1_Lewo|Armature.001|mixamo.com|Layer0
+  - first:
+      74: 1348315518570597953
+    second: Idle1_Lewo|Armature.002|mixamo.com|Layer0
+  - first:
+      74: -8066655662200022758
+    second: Idle1_Lewo|Armature.003|mixamo.com|Layer0
+  - first:
+      74: -5195323057561689524
+    second: Idle1_Lewo|Armature.004|mixamo.com|Layer0
+  - first:
+      74: 8184700603206166158
+    second: Idle1_Lewo|Armature.005|mixamo.com|Layer0
+  - first:
+      74: -5554191150741406451
+    second: Idle1_Lewo|Armature.005|mixamo.com|Layer0.001
+  - first:
+      74: 129975408363997500
+    second: Idle1_Lewo|Armature.006|mixamo.com|Layer0
+  - first:
+      74: 4376685192906980125
+    second: Idle1_Lewo|Armature|mixamo.com|Layer0
+  - first:
+      74: -3388926983550716016
+    second: Idle1_Lewo|Bieg_Lewo
+  - first:
+      74: 2227346445682749595
+    second: Idle1_Lewo|Bieg_Prawo
+  - first:
+      74: 3410204423406093527
+    second: Idle1_Lewo|Bieg_Prawo.001
+  - first:
+      74: -5423715021972098860
+    second: Idle1_Lewo|Idle1_Lewo
+  - first:
+      74: 7006128884609374920
+    second: Idle1_Lewo|Idle1_Prawo
+  - first:
+      74: 1371055210463265793
+    second: Idle1_Lewo|Idle1_Prawo.001
+  - first:
+      74: 8132171060945083203
+    second: Idle1_Lewo|Idle1_Prawo.002
+  - first:
+      74: 6294408490495613784
+    second: Idle1_Lewo|Idle2_Lewo
+  - first:
+      74: 291079657712132081
+    second: Idle1_Lewo|Idle2_Prawo
+  - first:
+      74: 6328916956488627219
+    second: Idle1_Lewo|Idle2_Prawo.001
+  - first:
+      74: 1540988478541363484
+    second: Idle1_Lewo|Skok_Lewo
+  - first:
+      74: 4020477735185864002
+    second: Idle1_Lewo|Skok_Prawo
+  - first:
+      74: -2517372263068376622
+    second: Idle1_Lewo|Skok_Prawo.001
+  - first:
+      74: -5469505087609249220
+    second: Idle1_Lewo|Stop_Lewo
+  - first:
+      74: -762153902694858963
+    second: Idle1_Lewo|Stop_Prawo
+  - first:
+      74: 8142735503740069989
+    second: Idle1_Lewo|Stop_Prawo.001
+  - first:
+      74: -6319169420454258230
+    second: Idle1_Lewo|Stop_Prawo.002
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

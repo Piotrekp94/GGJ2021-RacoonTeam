@@ -56,47 +56,43 @@ public class MovementScript : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                if (currentDirection == RunningDirections.Right)
-                {
-                    currentState = RunningStatesEnum.Turning;
-                    currentLock = RunningLockableStatesEnum.Locked;
-                    currentDirection = RunningDirections.Left;
-                }
+                // if (currentDirection == RunningDirections.Right)
+                // {
+                //     currentState = RunningStatesEnum.Turning;
+                //     currentLock = RunningLockableStatesEnum.Locked;
+                //     currentDirection = RunningDirections.Left;
+                // }
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                if (currentDirection == RunningDirections.Left)
-                {
-                    currentState = RunningStatesEnum.Turning;
-                    currentLock = RunningLockableStatesEnum.Locked;
-                    currentDirection = RunningDirections.Right;
-                }
+                // if (currentDirection == RunningDirections.Left)
+                // {
+                //     currentState = RunningStatesEnum.Turning;
+                //     currentLock = RunningLockableStatesEnum.Locked;
+                //     currentDirection = RunningDirections.Right;
+                // }
             }
             else
             {
                 currentState = RunningStatesEnum.Stopping;
-                currentLock = RunningLockableStatesEnum.Locked;
             }
         }
-        if (currentState == RunningStatesEnum.Turning)
+        if (currentState == RunningStatesEnum.Stopping)
         {
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftArrow) && currentDirection == RunningDirections.Right)
             {
-                currentState = RunningStatesEnum.Running;
+                currentState = RunningStatesEnum.Turning;
                 currentLock = RunningLockableStatesEnum.Locked;
                 currentDirection = RunningDirections.Left;
             }
-            else if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKey(KeyCode.RightArrow) && currentDirection == RunningDirections.Left)
             {
-                currentState = RunningStatesEnum.Running;
+                currentState = RunningStatesEnum.Turning;
                 currentLock = RunningLockableStatesEnum.Locked;
                 currentDirection = RunningDirections.Right;
             }
         }
 
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-        }
         // if (Input.GetKey(KeyCode.LeftArrow))
         // {
         //     if (_movement.x > 0) isRunningLeft = true;

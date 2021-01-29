@@ -135,6 +135,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1360786636722804809, guid: 16d1e1de447a38b43ae692295ff59ed0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360786636722804809, guid: 16d1e1de447a38b43ae692295ff59ed0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.475
       objectReference: {fileID: 0}
@@ -623,6 +627,9 @@ MonoBehaviour:
   speed: 10
   rb: {fileID: 662563078}
   animator: {fileID: 662563077}
+  _movement: {x: 0, y: 0, z: 0}
+  isStopping: 0
+  isTurning: 0
 --- !u!65 &662563081
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class MovementScript : MonoBehaviour
 
     public Rigidbody rb;
     public Animator animator;
-    public bool isOnGround;
+    public bool isOnGround = false;
     
     public Vector3 _movement;
 
@@ -18,6 +18,7 @@ public class MovementScript : MonoBehaviour
     private float currentStep = 0.1f;
     private float desiredSpeed = 0f;
     private bool isMoving;
+    public int speedy = 0;
 
 
     private void Update()
@@ -26,25 +27,31 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             speedx = -1 * speedx;
-            transform.eulerAngles  = new Vector3(transform.rotation.x, 90f, transform.rotation.z);
-
+            transform.eulerAngles  = new Vector3(0, 90f, 0);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.eulerAngles  = new Vector3(transform.rotation.x, -90f, transform.rotation.z);
+            transform.eulerAngles  = new Vector3(0, -90f, 0);
         }
         else
         {
             speedx = 0;
         }
         
-        if (Input.GetKey(KeyCode.Space))
+        if (isOnGround &&Input.GetKey(KeyCode.Space))
         {
-             
+            transform.eulerAngles  = new Vector3(0, transform.rotation.y, 0);
+            speedy = 10;
+        }
+
+        if (speedy > 0)
+        {
+            speedy -= 1;
         }
 
 
         _movement.x = speedx;
+        _movement.y = speedy;
         animator.SetInteger(currentSpeed, speedx);
     }
 

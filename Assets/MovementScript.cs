@@ -4,7 +4,7 @@ using UnityEngine;
 public class MovementScript : MonoBehaviour
 {
     private static readonly int currentSpeedHash = Animator.StringToHash("currentSpeed");
-    private static readonly int isOnGroundHash = Animator.StringToHash("isOnGround");
+    // private static readonly int isOnGroundHash = Animator.StringToHash("isOnGround");
 
 
     [SerializeField] private int speed;
@@ -97,25 +97,15 @@ public class MovementScript : MonoBehaviour
     private void OnCollisionExit(Collision other)
     {
         isOnGround = false;
-        animator.SetBool(isOnGroundHash, isOnGround);
+        // animator.SetBool(isOnGroundHash, isOnGround);
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        Debug.Log("Collision Enter");
-        Deadly d = other.gameObject.GetComponent<Deadly>();
-        if (d != null)
-        {
-            Debug.Log("Collision Ded");
 
-            Application.Quit();
-        }
-    }
 
     private void OnCollisionStay()
     {
         isOnGround = true;
         wasDoubleJumpUsed = false;
-        animator.SetBool(isOnGroundHash, isOnGround);
+        // animator.SetBool(isOnGroundHash, isOnGround);
     }
 }

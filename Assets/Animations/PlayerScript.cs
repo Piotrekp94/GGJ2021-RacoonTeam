@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PlayerScript : MonoBehaviour
@@ -24,6 +25,10 @@ public class PlayerScript : MonoBehaviour
         if (other.gameObject.CompareTag("Deadly"))
         {
             goToLastCheckPoint();
+        } 
+        if (other.gameObject.CompareTag("EndLevel"))
+        {
+            SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 

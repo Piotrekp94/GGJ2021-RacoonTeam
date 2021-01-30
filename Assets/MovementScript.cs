@@ -55,6 +55,7 @@ public class MovementScript : MonoBehaviour
             }
         }
 
+
         _movement.x = speedx;
         _movement.y = speedy;
         animator.SetInteger(currentSpeedHash, speedx);

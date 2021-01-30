@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
@@ -45,7 +46,8 @@ public class MovementScript : MonoBehaviour
             rb.AddForce(jump * jumpForce, ForceMode.Impulse);
             isOnGround = false;
         }
-        if (Input.GetKeyDown(KeyCode.P) )
+
+        if (Input.GetKeyDown(KeyCode.P))
         {
             GameObject[] photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
 
@@ -67,13 +69,20 @@ public class MovementScript : MonoBehaviour
         Vector3 direction = desiredPosition - rb.position;
         Ray ray = new Ray(rb.position, direction);
         RaycastHit hit;
-        if (!Physics.Raycast(ray,out hit,direction.magnitude))
+        if (!Physics.Raycast(ray, out hit, direction.magnitude))
             rb.MovePosition(desiredPosition);
         else
             rb.MovePosition(hit.point);
         // rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
-    
+
+    private void OnCollisionExit(Collision other)
+    {
+        isOnGround = false;
+        animator.SetBool(isOnGroundHash, isOnGround);
+    }
+
+
     private void OnCollisionStay()
     {
         isOnGround = true;

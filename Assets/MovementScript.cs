@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
@@ -23,9 +24,15 @@ public class MovementScript : MonoBehaviour
     public float jumpForce = 2.0f;
     public float dashForce = 2.0f;
 
+    public GameObject flashGo;
+    private GameObject instantiedFlash;
+
+    public AudioSource audioSource;
 
     private void Start()
     {
+        instantiedFlash = Instantiate(flashGo);
+        instantiedFlash.SetActive(false);
         jump = new Vector3(0.0f, 2.0f, 0.0f);
     }
 
@@ -63,9 +70,12 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             GameObject[] photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
-
+            instantiedFlash.SetActive(true);
+            Invoke("endFlash", 0.15f);
+            audioSource.Play();
             foreach (GameObject photo in photos)
             {
+                
                 photo.GetComponent<PhotogenicScript>().beVisible();
             }
         }
@@ -94,6 +104,11 @@ public class MovementScript : MonoBehaviour
         // rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
 
+    private void endFlash()
+    {
+        instantiedFlash.SetActive(false);
+
+    }
     private void OnCollisionExit(Collision other)
     {
         isOnGround = false;

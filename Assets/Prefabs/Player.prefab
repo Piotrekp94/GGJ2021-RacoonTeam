@@ -758,6 +758,7 @@ GameObject:
   - component: {fileID: 5154431316732989739}
   - component: {fileID: 5154431316732989737}
   - component: {fileID: 5154431316732989736}
+  - component: {fileID: 1242727173848457248}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -774,7 +775,7 @@ Transform:
   m_GameObject: {fileID: 5424970754981223545}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -7.29, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 4373659166092449373}
   - {fileID: 5008880568476683423}
@@ -795,7 +796,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 1
 --- !u!65 &5154431316732989739
 BoxCollider:
@@ -841,7 +842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8f8baf3a852854aa7075088f256534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   rb: {fileID: 5154431316732989718}
   animator: {fileID: 5154431316732989737}
   isOnGround: 1
@@ -849,6 +850,20 @@ MonoBehaviour:
   speedy: 0
   jump: {x: 0, y: 0, z: 0}
   jumpForce: 10
+--- !u!114 &1242727173848457248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424970754981223545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e37e13b79857a443bdba84677bfb097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 5154431316732989718}
+  jumpspeed: 10
 --- !u!1 &5841063788222100685
 GameObject:
   m_ObjectHideFlags: 0

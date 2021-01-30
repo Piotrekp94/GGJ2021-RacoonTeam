@@ -841,12 +841,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8f8baf3a852854aa7075088f256534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 6
   rb: {fileID: 5154431316732989718}
   animator: {fileID: 5154431316732989737}
   isOnGround: 0
   _movement: {x: 0, y: 0, z: 0}
   speedy: 0
+  jump: {x: 0, y: 0, z: 0}
+  jumpForce: 10
 --- !u!1 &5841063788222100685
 GameObject:
   m_ObjectHideFlags: 0

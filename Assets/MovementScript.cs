@@ -15,11 +15,11 @@ public class MovementScript : MonoBehaviour
     public bool isOnGround;
     public bool wasDoubleJumpUsed;
 
-    public Vector3 _movement;
+    private  Vector3 _movement;
 
-    public int speedy;
-    public Vector3 jump;
-    public Vector3 dash;
+    private int speedy;
+    private Vector3 jump;
+    private Vector3 dash;
 
     public float jumpForce = 2.0f;
     public float dashForce = 2.0f;
@@ -28,6 +28,8 @@ public class MovementScript : MonoBehaviour
     private GameObject instantiedFlash;
 
     public AudioSource audioSource;
+    public float flashCooldown = 5f;
+    private bool flashReady = true;
 
     private void Start()
     {
@@ -67,11 +69,14 @@ public class MovementScript : MonoBehaviour
         }
         
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && flashReady)
         {
+            flashReady = false;
             GameObject[] photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
             instantiedFlash.SetActive(true);
             Invoke("endFlash", 0.15f);
+            Invoke("refreshFlash", flashCooldown);
+
             audioSource.Play();
             foreach (GameObject photo in photos)
             {
@@ -108,6 +113,11 @@ public class MovementScript : MonoBehaviour
     {
         instantiedFlash.SetActive(false);
 
+    }
+    
+    private void refreshFlash()
+    {
+        flashReady = true;
     }
     private void OnCollisionExit(Collision other)
     {

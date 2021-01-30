@@ -12,6 +12,7 @@ public class MovementScript : MonoBehaviour
     public Rigidbody rb;
     public Animator animator;
     public bool isOnGround;
+    public bool wasDoubleJumpUsed;
 
     public Vector3 _movement;
 
@@ -41,11 +42,19 @@ public class MovementScript : MonoBehaviour
             speedx = 0;
         }
 
+        if (Input.GetKeyDown(KeyCode.Space) && !isOnGround && !wasDoubleJumpUsed)
+        {
+            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+            wasDoubleJumpUsed = true;
+        }
+
+        
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             rb.AddForce(jump * jumpForce, ForceMode.Impulse);
             isOnGround = false;
         }
+        
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -86,6 +95,7 @@ public class MovementScript : MonoBehaviour
     private void OnCollisionStay()
     {
         isOnGround = true;
+        wasDoubleJumpUsed = false;
         animator.SetBool(isOnGroundHash, isOnGround);
     }
 }

@@ -63,7 +63,15 @@ public class MovementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
+        Vector3 desiredPosition = (rb.position + _movement * (speed * Time.fixedDeltaTime));
+        Vector3 direction = desiredPosition - rb.position;
+        Ray ray = new Ray(rb.position, direction);
+        RaycastHit hit;
+        if (!Physics.Raycast(ray,out hit,direction.magnitude))
+            rb.MovePosition(desiredPosition);
+        else
+            rb.MovePosition(hit.point);
+        // rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
     
     private void OnCollisionStay()

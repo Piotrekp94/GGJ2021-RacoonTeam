@@ -28,6 +28,9 @@ public class MovementScript : MonoBehaviour
     private GameObject instantiedFlash;
 
     public AudioSource audioSource;
+    
+    private bool dashReady = true;
+    
     public float flashCooldown = 5f;
     private bool flashReady = true;
 
@@ -88,10 +91,11 @@ public class MovementScript : MonoBehaviour
 
         _movement.x = speedx;
         _movement.y = speedy;
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) && dashReady && !isOnGround)
         {
             dash = _movement * dashForce;
             rb.AddForce(dash, ForceMode.Impulse);
+            dashReady = false;
         }
         animator.SetInteger(currentSpeedHash, speedx);
     }
@@ -129,6 +133,7 @@ public class MovementScript : MonoBehaviour
 
     private void OnCollisionStay()
     {
+        dashReady = true;
         isOnGround = true;
         wasDoubleJumpUsed = false;
         // animator.SetBool(isOnGroundHash, isOnGround);

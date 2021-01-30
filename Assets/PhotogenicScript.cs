@@ -25,7 +25,7 @@ public class PhotogenicScript : MonoBehaviour
 
     public void Update()
     {
-        if (alpha < 0)
+        if (alpha <= 0)
         {
             alpha = 0;
             this.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 0.0f, alpha);

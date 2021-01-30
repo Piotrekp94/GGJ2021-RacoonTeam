@@ -1,5 +1,3 @@
-using System;
-using TMPro;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
@@ -15,24 +13,24 @@ public class MovementScript : MonoBehaviour
     public bool isOnGround;
     public bool wasDoubleJumpUsed;
 
-    private  Vector3 _movement;
-
-    private int speedy;
-    private Vector3 jump;
-    private Vector3 dash;
-
     public float jumpForce = 2.0f;
     public float dashForce = 2.0f;
 
     public GameObject flashGo;
-    private GameObject instantiedFlash;
 
     public AudioSource audioSource;
-    
-    private bool dashReady = true;
-    
+
     public float flashCooldown = 5f;
+
+    private Vector3 _movement;
+    private Vector3 dash;
+
+    private bool dashReady = true;
     private bool flashReady = true;
+    private GameObject instantiedFlash;
+    private Vector3 jump;
+
+    private int speedy;
 
     private void Start()
     {
@@ -52,6 +50,7 @@ public class MovementScript : MonoBehaviour
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.eulerAngles = new Vector3(0, -90f, 0);
+
         }
         else
         {
@@ -64,28 +63,24 @@ public class MovementScript : MonoBehaviour
             wasDoubleJumpUsed = true;
         }
 
-        
+
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             rb.AddForce(jump * jumpForce, ForceMode.Impulse);
             isOnGround = false;
         }
-        
+
 
         if (Input.GetKeyDown(KeyCode.P) && flashReady)
         {
             flashReady = false;
-            GameObject[] photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
+            var photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
             instantiedFlash.SetActive(true);
             Invoke("endFlash", 0.15f);
             Invoke("refreshFlash", flashCooldown);
 
             audioSource.Play();
-            foreach (GameObject photo in photos)
-            {
-                
-                photo.GetComponent<PhotogenicScript>().beVisible();
-            }
+            foreach (var photo in photos) photo.GetComponent<PhotogenicScript>().beVisible();
         }
 
 
@@ -97,14 +92,15 @@ public class MovementScript : MonoBehaviour
             rb.AddForce(dash, ForceMode.Impulse);
             dashReady = false;
         }
+
         animator.SetInteger(currentSpeedHash, speedx);
     }
 
     private void FixedUpdate()
     {
-        Vector3 desiredPosition = (rb.position + _movement * (speed * Time.fixedDeltaTime));
-        Vector3 direction = desiredPosition - rb.position;
-        Ray ray = new Ray(rb.position, direction);
+        var desiredPosition = rb.position + _movement * (speed * Time.fixedDeltaTime);
+        var direction = desiredPosition - rb.position;
+        var ray = new Ray(rb.position, direction);
         RaycastHit hit;
         if (!Physics.Raycast(ray, out hit, direction.magnitude))
             rb.MovePosition(desiredPosition);
@@ -113,22 +109,11 @@ public class MovementScript : MonoBehaviour
         // rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
 
-    private void endFlash()
-    {
-        instantiedFlash.SetActive(false);
-
-    }
-    
-    private void refreshFlash()
-    {
-        flashReady = true;
-    }
     private void OnCollisionExit(Collision other)
     {
         isOnGround = false;
         // animator.SetBool(isOnGroundHash, isOnGround);
     }
-
 
 
     private void OnCollisionStay()
@@ -137,5 +122,15 @@ public class MovementScript : MonoBehaviour
         isOnGround = true;
         wasDoubleJumpUsed = false;
         // animator.SetBool(isOnGroundHash, isOnGround);
+    }
+
+    private void endFlash()
+    {
+        instantiedFlash.SetActive(false);
+    }
+
+    private void refreshFlash()
+    {
+        flashReady = true;
     }
 }

@@ -20,6 +20,7 @@ public class PhotogenicScript : MonoBehaviour
     {
         GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         alpha = 1.0f;
+        Collider.enabled = true;
     }
 
     public void Update()
@@ -27,12 +28,14 @@ public class PhotogenicScript : MonoBehaviour
         if (alpha < 0)
         {
             this.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 0.0f, alpha);
+            Collider.enabled = false;
 
         }
         else
         {
             alpha -= ((float) 1/time)*Time.deltaTime;
             this.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+            
         }
 
 

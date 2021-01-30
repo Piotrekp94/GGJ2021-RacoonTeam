@@ -18,7 +18,11 @@ public class MovementScript : MonoBehaviour
 
     public int speedy;
     public Vector3 jump;
+    public Vector3 dash;
+
     public float jumpForce = 2.0f;
+    public float dashForce = 2.0f;
+
 
     private void Start()
     {
@@ -69,6 +73,11 @@ public class MovementScript : MonoBehaviour
 
         _movement.x = speedx;
         _movement.y = speedy;
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            dash = _movement * dashForce;
+            rb.AddForce(dash, ForceMode.Impulse);
+        }
         animator.SetInteger(currentSpeedHash, speedx);
     }
 
@@ -91,6 +100,17 @@ public class MovementScript : MonoBehaviour
         animator.SetBool(isOnGroundHash, isOnGround);
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("Collision Enter");
+        Deadly d = other.gameObject.GetComponent<Deadly>();
+        if (d != null)
+        {
+            Debug.Log("Collision Ded");
+
+            Application.Quit();
+        }
+    }
 
     private void OnCollisionStay()
     {

@@ -45,7 +45,15 @@ public class MovementScript : MonoBehaviour
             rb.AddForce(jump * jumpForce, ForceMode.Impulse);
             isOnGround = false;
         }
+        if (Input.GetKeyDown(KeyCode.P) )
+        {
+            GameObject[] photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
 
+            foreach (GameObject photo in photos)
+            {
+                photo.GetComponent<PhotogenicScript>().beVisible();
+            }
+        }
 
         _movement.x = speedx;
         _movement.y = speedy;

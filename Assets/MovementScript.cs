@@ -1,5 +1,3 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
@@ -12,16 +10,18 @@ public class MovementScript : MonoBehaviour
 
     public Rigidbody rb;
     public Animator animator;
-    public bool isOnGround = false;
-    
+    public bool isOnGround;
+
     public Vector3 _movement;
 
+    public int speedy;
+    public Vector3 jump;
+    public float jumpForce = 2.0f;
 
-    private float currentStep = 0.1f;
-    private float desiredSpeed = 0f;
-    private bool isMoving;
-    public int speedy = 0;
-
+    private void Start()
+    {
+        jump = new Vector3(0.0f, 2.0f, 0.0f);
+    }
 
     private void Update()
     {
@@ -29,26 +29,21 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             speedx = -1 * speedx;
-            transform.eulerAngles  = new Vector3(0, 90f, 0);
+            transform.eulerAngles = new Vector3(0, 90f, 0);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.eulerAngles  = new Vector3(0, -90f, 0);
+            transform.eulerAngles = new Vector3(0, -90f, 0);
         }
         else
         {
             speedx = 0;
         }
-        
-        if (isOnGround &&Input.GetKey(KeyCode.Space))
-        {
-            transform.eulerAngles  = new Vector3(0, transform.rotation.y, 0);
-            speedy = 10;
-        }
 
-        if (speedy > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
-            speedy -= 1;
+            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+            isOnGround = false;
         }
 
 
@@ -61,16 +56,10 @@ public class MovementScript : MonoBehaviour
     {
         rb.MovePosition(rb.position + _movement * (speed * Time.fixedDeltaTime));
     }
-
-    private void OnCollisionEnter(Collision other)
+    
+    private void OnCollisionStay()
     {
         isOnGround = true;
-        animator.SetBool(isOnGroundHash, isOnGround);
-
-    }
-    private void OnCollisionExit(Collision other)
-    {
-        isOnGround = false;
         animator.SetBool(isOnGroundHash, isOnGround);
     }
 }

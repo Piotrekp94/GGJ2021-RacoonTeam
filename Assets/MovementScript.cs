@@ -71,7 +71,7 @@ public class MovementScript : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.P) && flashReady)
+        if (Input.GetKeyDown(KeyCode.Z) && flashReady)
         {
             flashReady = false;
             var photos = GameObject.FindGameObjectsWithTag("IsPhotographic");
@@ -86,7 +86,7 @@ public class MovementScript : MonoBehaviour
 
         _movement.x = speedx;
         _movement.y = speedy;
-        if (Input.GetKeyDown(KeyCode.D) && dashReady && !isOnGround)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashReady && !isOnGround)
         {
             dash = _movement * dashForce;
             rb.AddForce(dash, ForceMode.Impulse);
